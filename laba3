@@ -1,0 +1,112 @@
+#pragma warning(disable : 4996)
+#include <windows.h>
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+const int LEN = 255;
+
+void reg_up(char word[LEN]);
+void task2(ifstream &TEXT);
+void task3(ifstream &TEXT);
+int count_SP(char LINE[255]);
+void sorter(char LINES[3][255]);
+
+int main() {
+
+	SetConsoleCP(1251);			  //|
+	SetConsoleOutputCP(1251);     //| для русского
+	setlocale(LC_ALL, "Russian"); //|
+
+	int NUM;
+	cout << "Введите номер задания, или 0, чтобы выйти - ";
+	cin >> NUM;
+	while (NUM) {
+		if (NUM == 1) {
+            cin.clear();
+            cin.ignore();
+            char word[LEN];
+            cin.getline(word, LEN);
+			cout << word << endl;
+            reg_up(word);
+            cout << word << endl;
+        }
+		if (NUM == 2) {
+            ifstream TEXT;
+            TEXT.open("text.txt");
+            task2(TEXT);
+            TEXT.close();
+        }
+		if (NUM == 3) {
+            ifstream TEXT;
+            TEXT.open("text.txt");
+            task3(TEXT);
+            TEXT.close();
+        }
+		cout << "Введите номер задания, или 0, чтобы выйти - ";
+		cin >> NUM;
+	}
+	return 0;
+}
+
+void reg_up(char word[LEN]) {
+    int i = 0;
+    while (word[i] != NULL) {
+        if (word[i] > 96 && word[i] < 123) //английские
+            word[i] -= 32;
+		if (word[i] > -33 && word[i] < 0) //русские
+			word[i] -= 32;
+        i++;
+    }
+    cout << endl;
+}
+
+void task2(ifstream& TEXT) {
+    char line[255];
+    char *token;
+	char delims[] = " !?.,\n";
+    TEXT.getline(line, 255, NULL);
+    token = strtok(line, delims);
+	while (token != NULL) {
+		if(token[0] == 'f' || token[0] == 's') cout << token << endl;
+		token = strtok(NULL, delims);
+    }
+}
+
+void task3(ifstream &TEXT) {
+	char LINES[3][255];
+	char temp[255] = " ";
+    TEXT.getline(LINES[0], 255, '\n');
+    TEXT.getline(LINES[1], 255, '\n');
+    TEXT.getline(LINES[2], 255, '\n');
+	for (int i = 0; i < 3; i++) {
+		cout << LINES[i] << endl;
+	}
+	cout << "\nОтсортировано по убыванию количества пробелов\n" << endl;
+	sorter(LINES);
+	for (int i = 0; i < 3; i++) {
+		cout << LINES[i] << endl;
+	}
+}
+
+int count_SP(char LINE[255]) {
+    int count = 0;
+    for (int i = 0; i < strlen(LINE); i++) {
+		if (LINE[i] == ' ') count++;
+	}
+    return count;
+}
+
+void sorter(char LINES[3][255]) {
+	char temp[255];
+	for (int i = 1; i <= 3; i++) {
+		for (int j = i - 1; j > 0; j--) {
+			if (count_SP(LINES[j]) > count_SP(LINES[j - 1])) {
+				memcpy(temp, LINES[j], 255);
+				memcpy(LINES[j], LINES[j - 1], 255);
+				memcpy(LINES[j - 1], temp, 255);
+			}
+		}
+	}
+}
