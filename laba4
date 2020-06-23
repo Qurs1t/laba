@@ -1,0 +1,44 @@
+#include <iostream>
+
+using namespace std;
+
+int G (int i);
+int F (int i);
+
+int G (int i) {
+if (i == 1) return 1;
+return 4*F(i - 1) + G(i - 1);
+}
+
+int F (int i) {
+if (i == 1) return 2;
+return 2*F(i-1) * G(i - 1);
+}
+
+int main() {
+for (int i = 1; i <= 10; i++) {
+cout « "F(" « i « "): " « F(i) « " " « "G(" « i « "): " « G(i) « endl;
+}
+return 0;
+}
+ 
+3 задание
+
+#include <iostream>
+
+using namespace std;
+
+int stepen (int dvoika, int n) {
+if (n == 1) return dvoika;
+stepen(dvoika*2, n - 1);
+}
+
+int main() {
+cout « "Введите степень двойки: ";
+int n;
+cin » n;
+cout « stepen(2, n);
+return 0;
+}
+ 
+2 задание
